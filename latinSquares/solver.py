@@ -19,7 +19,6 @@ import latinSquare
 
 def solve(sq):
     if sq.isCorrect():
-        print "found correct"
         return sq
     else:
         for state in sq.nextStates():
@@ -30,7 +29,7 @@ def solve(sq):
                 return sol
 
 if __name__ == "__main__":
-    square = latinSquare.LatinSquare(5,2)
+    square = latinSquare.LatinSquare(10,2)
     print "Initial Square:"
     print square
     square.addHoles()

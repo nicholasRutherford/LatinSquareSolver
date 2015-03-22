@@ -23,8 +23,6 @@ from copy import deepcopy
 class Hole:
 
     def __init__(self):
-        self.verified = False
-        self.options = []
         self.value = 0
 
     def __str__(self):
@@ -74,16 +72,12 @@ class LatinSquare:
     def __str__(self):
         output = ""
         spacing = int(math.ceil(math.log10(self.n)))
-        holeBefore = False
         for row in self.grid:
             for ele in row:
-                if holeBefore:
-                    output += "'" + ("{:>" +str(spacing) + "}").format(ele)
-                    holeBefore = False
-                else:
-                    output += " " + ("{:>" +str(spacing) + "}").format(ele)
                 if isinstance(ele, Hole):
-                    holeBefore = True
+                    output += ("{:>" +str(spacing) + "}").format(ele) + "'"
+                else:
+                    output += ("{:>" +str(spacing) + "}").format(ele) + " "
             output += "\n"
         return output[:-1] #Ignore last newline
 
@@ -93,9 +87,9 @@ class LatinSquare:
         for row in self.grid:
             for ele in row:
                 if isinstance(ele, Hole):
-                    output += " *"
+                    output += "* "
                 else:
-                    output += " " + ("{:>" +str(spacing) + "}").format(ele)
+                    output +=  ("{:>" +str(spacing) + "}").format(ele) + " "
             output += "\n"
         return output[:-1] #Ignore last newline
 
