@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 import random
+import math
 
 class Hole:
 
@@ -55,27 +56,29 @@ class LatinSquare:
         possibleOptions = range(self.n ** 2)
         selections = random.sample(possibleOptions, k)
 
-        for opt in selections:
+        for i, opt in enumerate(selections):
             x = opt / self.n
             y = opt % self.n
-            self.grid[x][y] = Hole()
-
+            self.grid[x][y] = self.holes[i]
 
     def __init__(self, n, k, seed=1337):
         random.seed(seed)
         self.n = n
         self.grid = [[(x+y)% n for x in range(n)] for y in range(n)]
         self.randomise()
+        self.holes = [Hole() for x in range(k)]
         self.addHoles(k)
 
     def __str__(self):
         output = ""
+        spacing = int(math.ceil(math.log10(self.n)))
         for row in self.grid:
             for ele in row:
-                output += " " + str(ele)
+                output += " " + ("{:>" +str(spacing) + "}").format(ele)
             output += "\n"
         return output[:-1] #Ignore last newline
 
 if __name__ == "__main__":
-    sq = LatinSquare(5, 5, seed=1337)
+    sq = LatinSquare(11, 5, seed=1337)
+    sq.holes[0].value = 90
     print sq
