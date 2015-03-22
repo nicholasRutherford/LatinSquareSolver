@@ -27,7 +27,7 @@ class Hole:
 
     def __str__(self):
         if self.value == -1:
-            return " "
+            return "*"
         else:
             return str(self.value)
 
@@ -56,7 +56,6 @@ class LatinSquare:
         selections = random.sample(possibleOptions, k)
 
         for opt in selections:
-            print opt
             x = opt / self.n
             y = opt % self.n
             self.grid[x][y] = Hole()
