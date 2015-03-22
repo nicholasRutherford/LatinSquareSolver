@@ -22,8 +22,9 @@ from copy import deepcopy
 
 class Hole:
 
-    def __init__(self):
+    def __init__(self, n):
         self.value = 0
+        self.options = range(n)
 
     def __str__(self):
         return str(self.value)
@@ -67,7 +68,7 @@ class LatinSquare:
         self.k = k
         self.grid = [[(x+y)% n for x in range(n)] for y in range(n)]
         self.randomise()
-        self.holes = [Hole() for x in range(k)]
+        self.holes = [Hole(n) for x in range(k)]
 
     def __str__(self):
         output = ""
@@ -111,15 +112,17 @@ class LatinSquare:
         return True
 
     def nextStates(self):
+        self.holes.sort(key = lambda x : len(x.options))
         for i, hole in enumerate(self.holes):
-            if hole.value != self.n -1:
+            if len(hole.options) != 0:
                 newState = deepcopy(self)
-                newState.holes[i].value += 1
+                newState.holes[i].value =newState.holes[i].options[0]
+                newState.holes[i].options.pop(0)
                 yield newState
 
 
 if __name__ == "__main__":
-    sq = LatinSquare(5, 2, seed=1337)
+    sq = LatinSquare(5, 10, seed=1337)
     sq.addHoles()
     print "Initial square"
     print sq
