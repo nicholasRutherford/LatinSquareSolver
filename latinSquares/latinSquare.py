@@ -18,19 +18,21 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import random
 import math
+from copy import deepcopy
 
 class Hole:
 
     def __init__(self):
         self.verified = False
         self.options = []
-        self.value = None
+        self.value = 0
 
     def __str__(self):
-        if self.value is None:
-            return "*"
-        else:
-            return str(self.value)
+        return str(self.value)
+
+    def __eq__(self, other):
+        return self.value == other
+
 
 
 class LatinSquare:
@@ -52,9 +54,9 @@ class LatinSquare:
                 self.grid[i][x] = self.grid[i][swapCol]
                 self.grid[i][swapCol] = temp
 
-    def addHoles(self, k):
+    def addHoles(self):
         possibleOptions = range(self.n ** 2)
-        selections = random.sample(possibleOptions, k)
+        selections = random.sample(possibleOptions, self.k)
 
         for i, opt in enumerate(selections):
             x = opt / self.n
@@ -64,25 +66,39 @@ class LatinSquare:
     def __init__(self, n, k, seed=1337):
         random.seed(seed)
         self.n = n
+        self.k = k
         self.grid = [[(x+y)% n for x in range(n)] for y in range(n)]
         self.randomise()
         self.holes = [Hole() for x in range(k)]
-        self.addHoles(k)
 
     def __str__(self):
         output = ""
         spacing = int(math.ceil(math.log10(self.n)))
+        holeBefore = False
         for row in self.grid:
             for ele in row:
-                output += " " + ("{:>" +str(spacing) + "}").format(ele)
+                if holeBefore:
+                    output += "'" + ("{:>" +str(spacing) + "}").format(ele)
+                    holeBefore = False
+                else:
+                    output += " " + ("{:>" +str(spacing) + "}").format(ele)
+                if isinstance(ele, Hole):
+                    holeBefore = True
             output += "\n"
         return output[:-1] #Ignore last newline
 
-    def isEndState(self):
-        for hole in self.holes:
-            if hole.value is None:
-                return False
-        return True
+    def strHoles(self):
+        output = ""
+        spacing = int(math.ceil(math.log10(self.n)))
+        for row in self.grid:
+            for ele in row:
+                if isinstance(ele, Hole):
+                    output += " *"
+                else:
+                    output += " " + ("{:>" +str(spacing) + "}").format(ele)
+            output += "\n"
+        return output[:-1] #Ignore last newline
+
 
     def isCorrect(self):
         # Verify rows
@@ -98,9 +114,22 @@ class LatinSquare:
             for ele in good:
                 if ele not in col:
                     return False
-
         return True
 
+    def nextStates(self):
+        for i, hole in enumerate(self.holes):
+            if hole.value != self.n -1:
+                newState = deepcopy(self)
+                newState.holes[i].value += 1
+                yield newState
+
+
 if __name__ == "__main__":
-    sq = LatinSquare(11, 5, seed=1337)
+    sq = LatinSquare(5, 2, seed=1337)
+    sq.addHoles()
+    print "Initial square"
     print sq
+    print "\nPossilbe squares:"
+    for st in sq.nextStates():
+        print st
+        print ""
