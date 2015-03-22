@@ -24,10 +24,10 @@ class Hole:
     def __init__(self):
         self.verified = False
         self.options = []
-        self.value = -1
+        self.value = None
 
     def __str__(self):
-        if self.value == -1:
+        if self.value is None:
             return "*"
         else:
             return str(self.value)
@@ -78,7 +78,29 @@ class LatinSquare:
             output += "\n"
         return output[:-1] #Ignore last newline
 
+    def isEndState(self):
+        for hole in self.holes:
+            if hole.value is None:
+                return False
+        return True
+
+    def isCorrect(self):
+        # Verify rows
+        good = range(self.n)
+        for row in self.grid:
+            for ele in good:
+                if ele not in row:
+                    return False
+
+        # Verify col
+        for i in range(self.n):
+            col = [x[i] for x in self.grid]
+            for ele in good:
+                if ele not in col:
+                    return False
+
+        return True
+
 if __name__ == "__main__":
     sq = LatinSquare(11, 5, seed=1337)
-    sq.holes[0].value = 90
     print sq
