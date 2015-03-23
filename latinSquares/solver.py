@@ -22,14 +22,19 @@ def solve(sq):
         return sq
     else:
         for state in sq.nextStates():
+            # Check if the state is valid
+            if not state.isValid():
+                continue
             sol = solve(state)
             if sol is None:
                 continue
             else:
                 return sol
+        # If there are no nextStates
+        return None
 
 if __name__ == "__main__":
-    square = latinSquare.LatinSquare(10,10)
+    square = latinSquare.LatinSquare(10,80, seed = 1337)
     print "Initial Square:"
     print square
     square.addHoles()

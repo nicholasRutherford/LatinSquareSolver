@@ -19,11 +19,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import random
 import math
 from copy import deepcopy
+from collections import Counter
 
 class Hole:
 
     def __init__(self, n):
         self.value = 0
+        self.valueSet = False
         self.options = range(n)
         self.x = 0
         self.y = 0
@@ -67,12 +69,13 @@ class LatinSquare:
             self.grid[x][y] = self.holes[i]
         self.checkHoleOptions()
 
-    def __init__(self, n, k, seed=1337):
+    def __init__(self, n, k, seed=1337, randomise=True):
         random.seed(seed)
         self.n = n
         self.k = k
         self.grid = [[(x+y)% n for x in range(n)] for y in range(n)]
-        self.randomise()
+        if randomise:
+            self.randomise()
         self.holes = [Hole(n) for x in range(k)]
 
     def __str__(self):
@@ -93,7 +96,7 @@ class LatinSquare:
         for row in self.grid:
             for ele in row:
                 if isinstance(ele, Hole):
-                    output += "* "
+                    output +=  ("{:>" +str(spacing) + "}").format("*") + " "
                 else:
                     output +=  ("{:>" +str(spacing) + "}").format(ele) + " "
             output += "\n"
@@ -117,17 +120,52 @@ class LatinSquare:
         return True
 
     def isValid(self):
-        pass
+        # Check Holes
+        for hole in self.holes:
+            if not hole.valueSet and len(hole.options) == 0:
+                return False
+
+        # Verify rows
+        for row in self.grid:
+            rowEle = []
+            for ele in row:
+                if not isinstance(ele, Hole):
+                    rowEle.append(ele)
+                elif ele.valueSet:
+                    rowEle.append(ele.value)
+            if any([x[1]>1 for x in Counter(rowEle).items()]):
+                return False
+
+        # Verify col
+        for i in range(self.n):
+            colEle = []
+            col = [x[i] for x in self.grid]
+            for ele in col:
+                if not isinstance(ele, Hole):
+                    colEle.append(ele)
+                elif ele.valueSet:
+                    colEle.append(ele.value)
+            if any([x[1]>1 for x in Counter(colEle).items()]):
+                return False
+        return True
+
 
     def nextStates(self):
-        print max([len(x.options) for x in self.holes])
+
+        # Sort holes so that the hole with the least number of
+        # options is looked at first
         self.holes.sort(key = lambda x : len(x.options))
+
         for i, hole in enumerate(self.holes):
-            if len(hole.options) != 0:
+            if hole.valueSet:
+                continue
+            for opt in hole.options:
                 newState = deepcopy(self)
-                newState.holes[i].value = newState.holes[i].options.pop(0)
+                newState.holes[i].value = opt
+                newState.holes[i].valueSet = True
                 newState.updateHoleOptions(newState.holes[i])
                 yield newState
+            break
 
     def checkHoleOptions(self):
         for hole in self.holes:
@@ -141,13 +179,17 @@ class LatinSquare:
                 if not isinstance(ele, Hole):
                     invalid.append(ele)
 
+            good = []
             for ele in hole.options:
-                if ele in invalid:
-                    while hole.options.count(ele) >0 :
-                        hole.options.remove(ele)
+                if ele not in invalid:
+                    good.append(ele)
+            hole.options = good
+
 
     def updateHoleOptions(self, h):
         for hole in self.holes:
+            if hole.valueSet:
+                continue
             if not( hole.x == h.x or hole.y == h.y):
                 continue
             if (hole.x ==h.x and hole.y==h.y):
@@ -158,7 +200,7 @@ class LatinSquare:
 
 
 if __name__ == "__main__":
-    sq = LatinSquare(5, 10, seed=1337)
+    sq = LatinSquare(5, 1, seed=1337)
     sq.addHoles()
     print "Initial square"
     print sq
