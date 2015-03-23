@@ -29,7 +29,7 @@ def solve(sq):
                 return sol
 
 if __name__ == "__main__":
-    square = latinSquare.LatinSquare(4,3)
+    square = latinSquare.LatinSquare(10,10)
     print "Initial Square:"
     print square
     square.addHoles()

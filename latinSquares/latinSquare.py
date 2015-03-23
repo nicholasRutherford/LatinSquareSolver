@@ -25,6 +25,8 @@ class Hole:
     def __init__(self, n):
         self.value = 0
         self.options = range(n)
+        self.x = 0
+        self.y = 0
 
     def __str__(self):
         return str(self.value)
@@ -60,7 +62,10 @@ class LatinSquare:
         for i, opt in enumerate(selections):
             x = opt / self.n
             y = opt % self.n
+            self.holes[i].x = x
+            self.holes[i].y = y
             self.grid[x][y] = self.holes[i]
+        self.checkHoleOptions()
 
     def __init__(self, n, k, seed=1337):
         random.seed(seed)
@@ -111,14 +116,45 @@ class LatinSquare:
                     return False
         return True
 
+    def isValid(self):
+        pass
+
     def nextStates(self):
+        print max([len(x.options) for x in self.holes])
         self.holes.sort(key = lambda x : len(x.options))
         for i, hole in enumerate(self.holes):
             if len(hole.options) != 0:
                 newState = deepcopy(self)
-                newState.holes[i].value =newState.holes[i].options[0]
-                newState.holes[i].options.pop(0)
+                newState.holes[i].value = newState.holes[i].options.pop(0)
+                newState.updateHoleOptions(newState.holes[i])
                 yield newState
+
+    def checkHoleOptions(self):
+        for hole in self.holes:
+            invalid = []
+            for ele in self.grid[hole.x]:
+                if not isinstance(ele, Hole):
+                    invalid.append(ele)
+
+            for row in self.grid:
+                ele  = row[hole.y]
+                if not isinstance(ele, Hole):
+                    invalid.append(ele)
+
+            for ele in hole.options:
+                if ele in invalid:
+                    while hole.options.count(ele) >0 :
+                        hole.options.remove(ele)
+
+    def updateHoleOptions(self, h):
+        for hole in self.holes:
+            if not( hole.x == h.x or hole.y == h.y):
+                continue
+            if (hole.x ==h.x and hole.y==h.y):
+                continue
+            while hole.options.count(h.value) > 0:
+                hole.options.remove(h.value)
+
 
 
 if __name__ == "__main__":
