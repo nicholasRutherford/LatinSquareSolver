@@ -1,5 +1,6 @@
 """
-{one line to give the program's name and a brief idea of what it does.}
+Solves a latin square.
+
 Copyright (C) 2015  Nicholas Rutherford
 
 This program is free software: you can redistribute it and/or modify
@@ -17,14 +18,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 import latinSquare
 
+
 def solve(sq):
-    if sq.isCorrect():
+    if sq.isSolved():
         return sq
     else:
         for state in sq.nextStates():
             # Check if the state is valid
             if not state.isValid():
                 continue
+
             sol = solve(state)
             if sol is None:
                 continue
@@ -34,11 +37,14 @@ def solve(sq):
         return None
 
 if __name__ == "__main__":
-    square = latinSquare.LatinSquare(10,80, seed = 1337)
+    square = latinSquare.LatinSquare(25, 50, seed=1337)
+
     print "Initial Square:"
     print square
+
     square.addHoles()
-    print "\nPuzzel: "
+    print "\nPuzzel to Solve: "
     print square.strHoles()
-    print "\nSolution: "
+
+    print "\nSolution Found: "
     print solve(square)
