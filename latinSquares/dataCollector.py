@@ -21,10 +21,10 @@ from timeit import timeit
 HEADER = "n,k,"
 FILENAME = "15data.csv"
 
-N_TO_TEST = [10*x for x in xrange(1, 11)]
+N_TO_TEST = [10]
 
 # Set up header
-TRIALS = 20
+TRIALS = 50
 for t in xrange(TRIALS):
     HEADER += "t" + str(t) + ","
 HEADER = HEADER[:-1]
@@ -34,7 +34,7 @@ ofile.write(HEADER + "\n")
 for n in N_TO_TEST:
     print n
 
-    for k in [n]:
+    for k in range(1, n**2-1):
         print "\t" + str(k)
         line = "{0},{1}".format(n, k)
 

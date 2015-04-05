@@ -24,7 +24,7 @@ from collections import Counter
 
 
 class Hole:
-    """Represent a square in a latin square that needs to be filled in,
+    """Represent a square in a Latin square that needs to be filled in,
         aka a hole in the square.
 
         Keeps track of the location of the hole, the possible
@@ -32,10 +32,10 @@ class Hole:
     """
 
     def __init__(self, n):
-        """ Inititialize a hole in a Latin Square
+        """ Initialize a hole in a Latin square
 
         Args:
-            n (int) - The size of the latin square
+            n (int): The size of the Latin square
         """
         self.value = 0
         self.valueSet = False
@@ -53,13 +53,13 @@ class Hole:
 class LatinSquare:
 
     def randomise(self):
-        """Takes a correct latin square and randomises the entries.
+        """Takes a correct Latin square and randomizes the entries.
 
         The randomization is done by performing an in place randomization
-        of the rows, and then of the columns. As long as the latin square
+        of the rows, and then of the columns. As long as the Latin square
         was valid before, it will be valid afterwards.
         """
-        # Randomise rows
+        # Randomize rows
         for x in range(self.n - 1):
             swapRow = random.randrange(x+1, self.n)
             for i in range(self.n):
@@ -67,7 +67,7 @@ class LatinSquare:
                 self.grid[x][i] = self.grid[swapRow][i]
                 self.grid[swapRow][i] = temp
 
-        # Randomise col
+        # Randomize col
         for x in range(self.n - 1):
             swapCol = random.randrange(x+1, self.n)
             for i in range(self.n):
@@ -79,7 +79,7 @@ class LatinSquare:
         """Randomly initializes the holes in the grid.
 
         This randomly adds K holes to the graph. The result will be a
-        solveable latin square, but there may be more then one solution
+        solvable Latin square, but there may be more then one solution
         to it.
         """
         possibleOptions = range(self.n ** 2)  # There are n^2 grid locations
@@ -97,13 +97,14 @@ class LatinSquare:
         """Initialize a latin square.
 
         Args:
-            n (int) - The side length of the square
-            k (int) - The number of holes in the grid
-            seed - The seed for the random number generator
-            randomise (bool) - Whether to randomise the grid, or leave with
+            n (int): The side length of the square
+            k (int): The number of holes in the grid
+            seed (int) - The seed for the random number generator
+            randomize (bool) - Whether to randomize the grid, or leave with
                                 the basic grid layout
 
-        If randomise is not selected the square will remain in the basic
+
+        If randomize is not selected the square will remain in the basic
         state where each row is one offset from the previous. Ie for N = 5:
         0 1 2 3 4
         1 2 3 4 0
@@ -149,7 +150,7 @@ class LatinSquare:
         """Determine is the current square is correctly solved
 
         Returns:
-            bool. True if it is correctly solved, False otherwise.
+            bool: True if it is correctly solved.
 
         Determines if the square is correct by making sure that each
         row and column contains all of the elements from 0 to n.
@@ -176,10 +177,9 @@ class LatinSquare:
         """Determine if the values for the holes is valid.
 
         Returns:
-            bool. If the holes have valid values will return True,
-                    False otherwise.
+            bool: If the holes have valid values will return True
 
-        Determines validatiy by checking that each non-set hole
+        Determines validity by checking that each non-set hole
         has at least one option for it's value.
         """
         for hole in self.holes:
@@ -191,11 +191,11 @@ class LatinSquare:
         """ Determines whether the rows are valid.
 
         Returns:
-            bool. True if the rows are valid, False otherwise.
+            bool: True if the rows are valid
 
-        Determines validitity by making sure no value is repeated twice in
+        Determines validity by making sure no value is repeated twice in
         each row. This is more expensive than the method used in isSolved, but
-        nessesary since there could be holes in the grid.
+        necessary since there could be holes in the grid.
         """
         for row in self.grid:
             rowEle = []
@@ -212,11 +212,11 @@ class LatinSquare:
         """ Determines whether the columns are valid.
 
         Returns:
-            bool. True if the columns are valid, False otherwise.
+            bool: True if the columns are valid, False otherwise.
 
-        Determines validitity by making sure no value is repeated twice in
+        Determines validity by making sure no value is repeated twice in
         each column. This is more expensive than the method used
-        in isSolved, but nessesary since there could be holes in the grid.
+        in isSolved, but necessary since there could be holes in the grid.
         """
         for i in range(self.n):
             colEle = []
@@ -231,10 +231,10 @@ class LatinSquare:
         return True
 
     def isValid(self):
-        """Whether a partially filled in latin square has valid hole values
+        """Whether a partially filled in Latin square has valid hole values
 
         Returns:
-            bool. True if everything is valid so far, False otherwise
+            bool: True if everything is valid so far, False otherwise
         """
 
         if not self.validHoles():
@@ -247,10 +247,10 @@ class LatinSquare:
 
     def nextStates(self):
         """Generate all the squares corresponding to the options of the
-            hole with the least number of options.
+        hole with the least number of options.
 
         Returns:
-            [latinSquare]. List of squares corresponding to selecting
+            [latinSquare]: List of squares corresponding to selecting
                             one of the possible values of the hole h,
                             where h has the smallest number of possible
                             values out of all the holes.

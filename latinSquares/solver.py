@@ -20,6 +20,14 @@ import latinSquare
 
 
 def solve(sq):
+    """Solve a Latin square.
+
+    Args:
+        sq (latinSquare): The square to solve.
+
+    Returns:
+        latinSquare: The solution to the initial square
+    """
     if sq.isSolved():
         return sq
     else:
