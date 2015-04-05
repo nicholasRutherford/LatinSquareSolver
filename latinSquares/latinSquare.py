@@ -93,7 +93,16 @@ class LatinSquare:
             self.grid[x][y] = self.holes[i]
         self.checkHoleOptions()
 
-    def __init__(self, n, k, seed=1337, randomise=True):
+    def __init__(self, seed=1337, randomise=True):
+        """Initialize a latin square.
+        """
+        random.seed(seed)
+        self.n = 0
+        self.k = 0
+        self.grid = []
+        self.holes = []
+
+    def randSquare(self, n, k, seed=1337, randomise=True):
         """Initialize a latin square.
 
         Args:
@@ -103,14 +112,14 @@ class LatinSquare:
             randomize (bool) - Whether to randomize the grid, or leave with
                                 the basic grid layout
 
-
-        If randomize is not selected the square will remain in the basic
-        state where each row is one offset from the previous. Ie for N = 5:
-        0 1 2 3 4
-        1 2 3 4 0
-        2 3 4 0 1
-        3 4 0 1 2
-        4 0 1 2 3
+        Notes:
+            If randomize is not selected the square will remain in the basic
+            state where each row is one offset from the previous. Ie for N = 5:
+            0 1 2 3 4
+            1 2 3 4 0
+            2 3 4 0 1
+            3 4 0 1 2
+            4 0 1 2 3
         """
         random.seed(seed)
         self.n = n
@@ -311,3 +320,32 @@ class LatinSquare:
                 continue
             while hole.options.count(h.value) > 0:
                 hole.options.remove(h.value)
+
+    def loadSquare(self, rawStr):
+        rows = rawStr.split("\n")
+        n = len(rows)
+        self.n = n
+        self.grid = [[(x+y) % n for x in range(n)] for y in range(n)]
+        self.holes = []
+
+        for x, row in enumerate(rows):
+            elements = row.split()
+            for y, ele in enumerate(elements):
+                try:
+                    self.grid[x][y] = int(ele)
+                except ValueError:
+                    h = Hole(n)
+                    self.grid[x][y] = h
+                    self.holes.append(h)
+
+
+if __name__ == '__main__':
+    sq = LatinSquare()
+    raw_string = "0 1 2 3 4\n"
+    raw_string += "1 2 3 4 _\n"
+    raw_string += "2 3 4 0 1\n"
+    raw_string += "3 4 0 1 2\n"
+    raw_string += "4 0 1 2 3"
+    sq.loadSquare(raw_string)
+    print sq.holes
+    print sq.strHoles()
