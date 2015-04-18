@@ -22,19 +22,37 @@ import latinSquare
 class Solver():
 
     def __init__(self):
-        self.originalSq = None
+        self.originalSq = latinSquare.LatinSquare()
         self.sovSq = None
 
     def __str__(self):
-        pass
+        if not self.originalSq.loaded:
+            print "No square loaded. Run 'loadSquare' or 'randSquare' first"
+            return ""
+
+        toOut = "Original Square:\n"
+        toOut += self.originalSq.strHoles() + "\n"
+
+        if self.sovSq is None:
+            return toOut
+        else:
+            toOut += "\nSolved Square:\n"
+            toOut += str(self.sovSq)
+            return toOut
 
     def loadSquare(self, rawString):
-        pass
+        self.originalSq.loadSquare(rawString)
+
+    def randSquare(self, n, k, seed=None, randomise=True):
+        self.originalSq.randSquare(n, k, seed, randomise)
 
     def solveSquare(self):
-        pass
+        if not self.originalSq.loaded:
+            print "Error: No square loaded."
+        else:
+            self.sovSq = self._solve(self.originalSq)
 
-    def solve(self, sq):
+    def _solve(self, sq):
         """Solve a Latin square.
 
         Args:
@@ -51,7 +69,7 @@ class Solver():
                 if not state.isValid():
                     continue
 
-                sol = self.solve(state)
+                sol = self._solve(state)
                 if sol is None:
                     continue
                 else:
@@ -60,12 +78,15 @@ class Solver():
             return None
 
 if __name__ == "__main__":
+
     square = ("0 1 2 3 4\n"
               "1 2 3 4 _\n"
               "2 3 4 0 1\n"
               "3 4 0 1 2\n"
               "4 0 1 2 3")
-
     solv = Solver()
-    solv.loadSolver(square)
-    solv.solve()
+    # solv.randSquare(10, 25)
+    solv.loadSquare(square)
+    print solv
+    solv.solveSquare()
+    print solv

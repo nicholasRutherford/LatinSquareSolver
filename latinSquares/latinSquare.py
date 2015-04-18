@@ -93,7 +93,7 @@ class LatinSquare:
             self.grid[x][y] = self.holes[i]
         self.checkHoleOptions()
 
-    def __init__(self, seed=1337, randomise=True):
+    def __init__(self, seed=None):
         """Initialize a latin square.
         """
         random.seed(seed)
@@ -101,6 +101,7 @@ class LatinSquare:
         self.k = 0
         self.grid = []
         self.holes = []
+        self.loaded = False
 
     def randSquare(self, n, k, seed=1337, randomise=True):
         """Initialize a latin square.
@@ -128,6 +129,8 @@ class LatinSquare:
         if randomise:
             self.randomise()
         self.holes = [Hole(n) for x in range(k)]
+        self.addHoles()
+        self.loaded = True
 
     def __str__(self):
         """Pretty output. Hole values are postfixed with '."""
@@ -342,6 +345,7 @@ class LatinSquare:
 
         if not self.isValid():
             raise RuntimeError("Invalid square: invalid initial position.")
+        self.loaded = True
 
 
 if __name__ == '__main__':
