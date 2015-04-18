@@ -19,40 +19,53 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import latinSquare
 
 
-def solve(sq):
-    """Solve a Latin square.
+class Solver():
 
-    Args:
-        sq (latinSquare): The square to solve.
+    def __init__(self):
+        self.originalSq = None
+        self.sovSq = None
 
-    Returns:
-        latinSquare: The solution to the initial square
-    """
-    if sq.isSolved():
-        return sq
-    else:
-        for state in sq.nextStates():
-            # Check if the state is valid
-            if not state.isValid():
-                continue
+    def __str__(self):
+        pass
 
-            sol = solve(state)
-            if sol is None:
-                continue
-            else:
-                return sol
-        # If there are no nextStates
-        return None
+    def loadSquare(self, rawString):
+        pass
+
+    def solveSquare(self):
+        pass
+
+    def solve(self, sq):
+        """Solve a Latin square.
+
+        Args:
+            sq (latinSquare): The square to solve.
+
+        Returns:
+            latinSquare: The solution to the initial square
+        """
+        if sq.isSolved():
+            return sq
+        else:
+            for state in sq.nextStates():
+                # Check if the state is valid
+                if not state.isValid():
+                    continue
+
+                sol = self.solve(state)
+                if sol is None:
+                    continue
+                else:
+                    return sol
+            # If there are no nextStates
+            return None
 
 if __name__ == "__main__":
-    square = latinSquare.LatinSquare(25, 50, seed=1337)
+    square = ("0 1 2 3 4\n"
+              "1 2 3 4 _\n"
+              "2 3 4 0 1\n"
+              "3 4 0 1 2\n"
+              "4 0 1 2 3")
 
-    print "Initial Square:"
-    print square
-
-    square.addHoles()
-    print "\nPuzzel to Solve: "
-    print square.strHoles()
-
-    print "\nSolution Found: "
-    print solve(square)
+    solv = Solver()
+    solv.loadSolver(square)
+    solv.solve()
