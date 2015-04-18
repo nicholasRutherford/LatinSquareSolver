@@ -22,10 +22,13 @@ import latinSquare
 class Solver():
 
     def __init__(self):
+        """Initialize a solver in order to solve a latin square."""
+
         self.originalSq = latinSquare.LatinSquare()
         self.sovSq = None
 
     def __str__(self):
+        """Pretty output"""
         if not self.originalSq.loaded:
             print "No square loaded. Run 'loadSquare' or 'randSquare' first"
             return ""
@@ -41,12 +44,47 @@ class Solver():
             return toOut
 
     def loadSquare(self, rawString):
+        """Load a latin square from a string
+
+        Args:
+            rawStr (str): The latin square as string
+
+        Notes:
+            The elements must be intgers seperated by spaces. The holes
+            are denoted as non-integer, non-space elements, such as '*', or
+            '_'. For example:
+            0 1 2 3 4
+            1 2 3 4 _
+            2 3 4 0 1
+            3 4 0 1 2
+            4 0 1 2 3
+        """
         self.originalSq.loadSquare(rawString)
 
     def randSquare(self, n, k, seed=None, randomise=True):
+        """Initialize a random latin square.
+
+        Args:
+            n (int): The side length of the square
+            k (int): The number of holes in the grid
+            seed (int): The seed for the random number generator
+            randomize (bool): Whether to randomize the grid, or leave with
+                                the basic grid layout
+
+        Notes:
+            If randomize is not selected the square will remain in the basic
+            state where each row is one offset from the previous. Ie for N = 5:
+            0 1 2 3 4
+            1 2 3 4 0
+            2 3 4 0 1
+            3 4 0 1 2
+            4 0 1 2 3
+        """
         self.originalSq.randSquare(n, k, seed, randomise)
 
     def solveSquare(self):
+        """Solve the loaded latin square."""
+
         if not self.originalSq.loaded:
             print "Error: No square loaded."
         else:
@@ -84,6 +122,7 @@ if __name__ == "__main__":
               "2 3 4 0 1\n"
               "3 4 0 1 2\n"
               "4 0 1 2 3")
+
     solv = Solver()
     # solv.randSquare(10, 25)
     solv.loadSquare(square)

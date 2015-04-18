@@ -24,15 +24,16 @@ from collections import Counter
 
 
 class Hole:
-    """Represent a square in a Latin square that needs to be filled in,
-        aka a hole in the square.
+    """
+    Represent a square in a Latin square that needs to be filled in,
+    aka a hole in the square.
 
-        Keeps track of the location of the hole, the possible
-        values that the hole can take, and whether the value has been set.
+    Keeps track of the location of the hole, the possible
+    values that the hole can take, and whether the value has been set.
     """
 
     def __init__(self, n):
-        """ Initialize a hole in a Latin square
+        """ Initialize a hole in a Latin square.
 
         Args:
             n (int): The size of the Latin square
@@ -93,10 +94,10 @@ class LatinSquare:
             self.grid[x][y] = self.holes[i]
         self.checkHoleOptions()
 
-    def __init__(self, seed=None):
+    def __init__(self):
         """Initialize a latin square.
         """
-        random.seed(seed)
+
         self.n = 0
         self.k = 0
         self.grid = []
@@ -104,13 +105,13 @@ class LatinSquare:
         self.loaded = False
 
     def randSquare(self, n, k, seed=1337, randomise=True):
-        """Initialize a latin square.
+        """Initialize a random latin square.
 
         Args:
             n (int): The side length of the square
             k (int): The number of holes in the grid
-            seed (int) - The seed for the random number generator
-            randomize (bool) - Whether to randomize the grid, or leave with
+            seed (int): The seed for the random number generator
+            randomize (bool): Whether to randomize the grid, or leave with
                                 the basic grid layout
 
         Notes:
@@ -133,7 +134,11 @@ class LatinSquare:
         self.loaded = True
 
     def __str__(self):
-        """Pretty output. Hole values are postfixed with '."""
+        """Pretty output. Hole values are postfixed with '.
+
+        Returns:
+            str: The pretty output.
+        """
         output = ""
         spacing = int(math.ceil(math.log10(self.n)))
         for row in self.grid:
@@ -146,7 +151,11 @@ class LatinSquare:
         return output[:-1]  # Ignore last newline
 
     def strHoles(self):
-        """Pretty output. Holes are marked with an *."""
+        """Pretty output. Holes are marked with an *.
+
+        Returns:
+            str: The pretty output.
+        """
         output = ""
         spacing = int(math.ceil(math.log10(self.n)))
         for row in self.grid:
@@ -164,10 +173,11 @@ class LatinSquare:
         Returns:
             bool: True if it is correctly solved.
 
-        Determines if the square is correct by making sure that each
-        row and column contains all of the elements from 0 to n.
-        This method will fail quicker than counting the values for
-        each row and column and making sure there are no duplicates.
+        Notes:
+            Determines if the square is correct by making sure that each
+            row and column contains all of the elements from 0 to n.
+            This method will fail quicker than counting the values for
+            each row and column and making sure there are no duplicates.
         """
         good = range(self.n)
 
@@ -191,8 +201,9 @@ class LatinSquare:
         Returns:
             bool: If the holes have valid values will return True
 
-        Determines validity by checking that each non-set hole
-        has at least one option for it's value.
+        Notes:
+            Determines validity by checking that each non-set hole
+            has at least one option for it's value.
         """
         for hole in self.holes:
             if not hole.valueSet and len(hole.options) == 0:
@@ -205,9 +216,10 @@ class LatinSquare:
         Returns:
             bool: True if the rows are valid
 
-        Determines validity by making sure no value is repeated twice in
-        each row. This is more expensive than the method used in isSolved, but
-        necessary since there could be holes in the grid.
+        Notes:
+            Determines validity by making sure no value is repeated
+            twice in each row. This is more expensive than the method used
+            in isSolved, but necessary since there could be holes in the grid.
         """
         for row in self.grid:
             rowEle = []
@@ -226,9 +238,10 @@ class LatinSquare:
         Returns:
             bool: True if the columns are valid, False otherwise.
 
-        Determines validity by making sure no value is repeated twice in
-        each column. This is more expensive than the method used
-        in isSolved, but necessary since there could be holes in the grid.
+        Notes:
+            Determines validity by making sure no value is repeated twice in
+            each column. This is more expensive than the method used
+            in isSolved, but necessary since there could be holes in the grid.
         """
         for i in range(self.n):
             colEle = []
@@ -312,7 +325,10 @@ class LatinSquare:
 
     def updateHoleOptions(self, h):
         """Removes possible options from each hole based on the values of
-        the holes with their value set.
+        the given hole.
+
+        Args:
+            h (Hole): The hole to check all the other holes against
         """
         for hole in self.holes:
             if hole.valueSet:
@@ -325,6 +341,21 @@ class LatinSquare:
                 hole.options.remove(h.value)
 
     def loadSquare(self, rawStr):
+        """Load a latin square from a string
+
+        Args:
+            rawStr (str): The latin square as string
+
+        Notes:
+            The elements must be intgers seperated by spaces. The holes
+            are denoted as non-integer, non-space elements, such as '*', or
+            '_'. For example:
+            0 1 2 3 4
+            1 2 3 4 _
+            2 3 4 0 1
+            3 4 0 1 2
+            4 0 1 2 3
+        """
         rows = rawStr.split("\n")
         n = len(rows)
         self.n = n
@@ -346,15 +377,3 @@ class LatinSquare:
         if not self.isValid():
             raise RuntimeError("Invalid square: invalid initial position.")
         self.loaded = True
-
-
-if __name__ == '__main__':
-    sq = LatinSquare()
-    raw_string = "0 1 2 3 4\n"
-    raw_string += "1 2 3 4 _\n"
-    raw_string += "2 3 4 0 1\n"
-    raw_string += "3 4 0 1 2\n"
-    raw_string += "4 0 1 2 3"
-    sq.loadSquare(raw_string)
-    print sq.holes
-    print sq.strHoles()
