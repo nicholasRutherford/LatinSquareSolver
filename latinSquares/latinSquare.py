@@ -330,6 +330,8 @@ class LatinSquare:
 
         for x, row in enumerate(rows):
             elements = row.split()
+            if len(elements) != n:
+                raise RuntimeError("Invalid square: uneven rows.")
             for y, ele in enumerate(elements):
                 try:
                     self.grid[x][y] = int(ele)
@@ -337,6 +339,9 @@ class LatinSquare:
                     h = Hole(n)
                     self.grid[x][y] = h
                     self.holes.append(h)
+
+        if not self.isValid():
+            raise RuntimeError("Invalid square: invalid initial position.")
 
 
 if __name__ == '__main__':
