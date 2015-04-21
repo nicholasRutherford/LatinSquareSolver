@@ -44,7 +44,7 @@ iterate through all the possible values for each hole. Unfortunately the
 complexity of this problem will cause depth first search to take an infeasible
 amount of time for even small problems like the one shown above. Since brute
 force depth first search is out of the question we need to come up with clever
-methods to help it out and this is done with two main methods, forward 
+methods to help it out and this is done with two main methods, forward
 checking, and arc consistency. When we are filling in values to the
 Latin Square we have to make two decisions per branch, which hole to fill,
 and what value to put into the hole. We use forward checking to make sure
@@ -52,6 +52,12 @@ that we select the hole, and value for that hole that has the highest
 probability of being correct. Arc Consistency is used to keep track of
 what the valid values would be for each hole, and to update this list of
 values as we fill in the square.
+
+License:
+--------
+.. image:: ./images/gplv3.png
+This software is licensed under GPL V3. For the full license
+see: :ref:`license-label`
 
 Contents:
 ---------
@@ -63,3 +69,4 @@ Contents:
    quickstart
    latinSquares
    extraInfo
+   license
