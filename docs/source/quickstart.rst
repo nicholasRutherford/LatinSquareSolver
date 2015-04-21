@@ -35,7 +35,7 @@ Then we can run:
     solv.solveSquare()
     print solv
 
-Will give us:
+Which will give us:
 ::
 
     Original Square:
@@ -72,7 +72,7 @@ guaranteed to be unique.
     solv.solveSquare()
     print solv
 
-Will give us:
+Which will give us:
 ::
 
     Original Square:
