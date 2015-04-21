@@ -1,21 +1,20 @@
 """
 Represents a Latin Square and includes methods needed to search for a solution
-
-Copyright (C) 2015  Nicholas Rutherford
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
+# Copyright (C) 2015  Nicholas Rutherford
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import random
 import math
@@ -56,9 +55,10 @@ class LatinSquare:
     def randomise(self):
         """Takes a correct Latin square and randomizes the entries.
 
-        The randomization is done by performing an in place randomization
-        of the rows, and then of the columns. As long as the Latin square
-        was valid before, it will be valid afterwards.
+        Notes:
+            The randomization is done by performing an in place randomization
+            of the rows, and then of the columns. As long as the Latin square
+            was valid before, it will be valid afterwards.
         """
         # Randomize rows
         for x in range(self.n - 1):
@@ -79,9 +79,10 @@ class LatinSquare:
     def addHoles(self):
         """Randomly initializes the holes in the grid.
 
-        This randomly adds K holes to the graph. The result will be a
-        solvable Latin square, but there may be more then one solution
-        to it.
+        Notes:
+            This randomly adds K holes to the graph. The result will be a
+            solvable Latin square, but there may be more then one solution
+            to it.
         """
         possibleOptions = range(self.n ** 2)  # There are n^2 grid locations
         selections = random.sample(possibleOptions, self.k)
@@ -114,16 +115,23 @@ class LatinSquare:
             randomize (bool): Whether to randomize the grid, or leave with
                                 the basic grid layout
 
+        Raises:
+            RuntimeError: if K > N.
+
         Notes:
             If randomize is not selected the square will remain in the basic
-            state where each row is one offset from the previous. Ie for N = 5:
-            0 1 2 3 4
-            1 2 3 4 0
-            2 3 4 0 1
-            3 4 0 1 2
-            4 0 1 2 3
+            state where each row is one offset from the previous.
+            Ie for N = 5::
+                0 1 2 3 4
+                1 2 3 4 0
+                2 3 4 0 1
+                3 4 0 1 2
+                4 0 1 2 3
         """
         random.seed(seed)
+        if k > n**2:
+            raise RuntimeError("Error: K can not be larger than N^2.")
+
         self.n = n
         self.k = k
         self.grid = [[(x+y) % n for x in range(n)] for y in range(n)]
@@ -164,6 +172,7 @@ class LatinSquare:
                     output += ("{:>" + str(spacing) + "}").format("*") + " "
                 else:
                     output += ("{:>" + str(spacing) + "}").format(ele) + " "
+            output = output[:-1]  # drop space at end
             output += "\n"
         return output[:-1]  # Ignore last newline
 
@@ -346,15 +355,18 @@ class LatinSquare:
         Args:
             rawStr (str): The latin square as string
 
+        Raises:
+            RuntimeError: Invalid Square Given
+
         Notes:
             The elements must be intgers seperated by spaces. The holes
             are denoted as non-integer, non-space elements, such as '*', or
-            '_'. For example:
-            0 1 2 3 4
-            1 2 3 4 _
-            2 3 4 0 1
-            3 4 0 1 2
-            4 0 1 2 3
+            '_'. For example::
+                0 1 2 3 4
+                1 2 3 4 _
+                2 3 4 0 1
+                3 4 0 1 2
+                4 0 1 2 3
         """
         rows = rawStr.split("\n")
         n = len(rows)

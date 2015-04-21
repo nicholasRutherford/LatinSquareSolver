@@ -1,21 +1,21 @@
+# Copyright (C) 2015  Nicholas Rutherford
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 Solves a latin square.
-
-Copyright (C) 2015  Nicholas Rutherford
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
+
 import latinSquare
 
 
@@ -52,12 +52,13 @@ class Solver():
         Notes:
             The elements must be intgers seperated by spaces. The holes
             are denoted as non-integer, non-space elements, such as '*', or
-            '_'. For example:
-            0 1 2 3 4
-            1 2 3 4 _
-            2 3 4 0 1
-            3 4 0 1 2
-            4 0 1 2 3
+            '_'. For example::
+
+                0 1 2 3 4
+                1 2 3 4 _
+                2 3 4 0 1
+                3 4 0 1 2
+                4 0 1 2 3
         """
         self.originalSq.loadSquare(rawString)
 
@@ -72,13 +73,17 @@ class Solver():
                                 the basic grid layout
 
         Notes:
+            The Latin Square generated will be solveable, though the
+            solution is not guarteed to be unique.
             If randomize is not selected the square will remain in the basic
-            state where each row is one offset from the previous. Ie for N = 5:
-            0 1 2 3 4
-            1 2 3 4 0
-            2 3 4 0 1
-            3 4 0 1 2
-            4 0 1 2 3
+            state where each row is one offset from the previous.
+            Ie for N = 5::
+
+                0 1 2 3 4
+                1 2 3 4 0
+                2 3 4 0 1
+                3 4 0 1 2
+                4 0 1 2 3
         """
         self.originalSq.randSquare(n, k, seed, randomise)
 
