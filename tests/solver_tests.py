@@ -1,5 +1,5 @@
 # from latinSquares import latinSquare
-from latinSquares import solver
+from LatinSquareSolver import solver
 
 
 def test_solveSquare():

@@ -1,6 +1,6 @@
 from nose.tools import raises
 
-from latinSquares import latinSquare
+from LatinSquareSolver import latinSquare
 import random
 
 
