@@ -1,3 +1,6 @@
+"""
+Solves a latin square.
+"""
 # Copyright (C) 2015  Nicholas Rutherford
 #
 # This program is free software: you can redistribute it and/or modify
@@ -12,9 +15,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-"""
-Solves a latin square.
-"""
+
 
 import latinSquare
 
@@ -131,6 +132,5 @@ if __name__ == "__main__":
     solv = Solver()
     # solv.randSquare(10, 25)
     solv.loadSquare(square)
-    print solv
     solv.solveSquare()
     print solv
