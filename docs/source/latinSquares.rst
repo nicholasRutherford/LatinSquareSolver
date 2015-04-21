@@ -1,18 +1,18 @@
 .. _solver-class-label:
 
-Classes
-=======
+Object Classes
+==============
 
 Solver
 ------
-.. automodule:: latinSquares.solver
+.. automodule:: LatinSquareSolver.solver
     :members:
     :undoc-members:
     :show-inheritance:
 
 LatinSquare
 -----------
-.. automodule:: latinSquares.latinSquare
+.. automodule:: LatinSquareSolver.latinSquare
     :members:
     :undoc-members:
     :show-inheritance:
