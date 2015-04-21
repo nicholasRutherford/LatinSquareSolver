@@ -56,7 +56,7 @@ values as we fill in the square.
 License:
 --------
 .. image:: ./images/gplv3.png
-This software is licensed under GPL V3. For the full license
+This software is licensed under GPLv3. For the full license
 see: :ref:`license-label`
 
 Contents:

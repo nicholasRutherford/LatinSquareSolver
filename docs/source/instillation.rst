@@ -3,7 +3,26 @@
 Instillation
 =============
 
-How to install:
+Using Pip
+---------
+::
 
-1. Something
-2. Step 2
+    pip install LatinSquareSolver
+
+Directly From Source
+---------------------
+::
+
+    git clone https://github.com/nicholasRutherford/LatinSquareSolver.git
+
+Building Documentation
+^^^^^^^^^^^^^^^^^^^^^^
+If you want to build the documentation you'll need some extra packages:
+::
+
+    pip install sphinx sphinx-rtd-theme Pygments
+
+Then it can be built with:
+::
+
+    sphinx-build -a -b html docs/source/ docs/build/

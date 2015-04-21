@@ -1,49 +1,80 @@
 .. _quickstart-label:
 
-Quickstart
+Running
 ===========
 
-Example loading an already made square:
----------------------------------------
+Loading a square:
+-----------------
+If you have a square to solve already, you can simply load it into the solver.
+The format for the square is as follows:
+
+1. Each row of text is a row of the square.
+2. Each element is an integer, separated by a space.
+3. Holes are denoted as non-intger, non-space characters. ie ``*`` or ``_``.
+
+For example if we had the following in a file ``square.txt``:
 ::
 
-    square = ('0 1 2 3 4\\n'
-              '1 2 3 4 _\\n'
-              '2 3 4 0 1\\n'
-              '3 4 0 1 2\\n'
-              '4 0 1 2 3')
+    0 1 2 3 4
+    1 2 3 4 _
+    2 3 4 0 1
+    3 * 0 1 2
+    4 0 1 2 3
+
+Then we can run:
+::
+
+    from LatinSquareSolver.solver import Solver
+
+    rawFile = open("square.txt", "r")
+    square = rawFile.read()
+    rawFile.close()
 
     solv = Solver()
     solv.loadSquare(square)
     solv.solveSquare()
     print solv
 
-    >>>
+Will give us:
+::
+
     Original Square:
     0 1 2 3 4
     1 2 3 4 *
     2 3 4 0 1
-    3 4 0 1 2
+    3 * 0 1 2
     4 0 1 2 3
 
     Solved Square:
     0 1 2 3 4
     1 2 3 4 0'
     2 3 4 0 1
-    3 4 0 1 2
+    3 4'0 1 2
     4 0 1 2 3
 
 
-Example with a randomly generated square:
------------------------------------------
+Generating a square:
+--------------------
+We can also generate random squares as well by using the ``randSquare(n, k)``
+function. It requires to parameters:
+
+* \\(N\\) - The side length of the square.
+* \\(K\\) - The number of holes to add to the square.
+
+Note: The squares generated will be solvable, but the solution is not
+guaranteed to be unique.
 ::
+
+    from LatinSquareSolver.solver import Solver
 
     solv = Solver()
     solv.randSquare(10, 25) # 10 x 10 square with 25 holes
     solv.solveSquare()
     print solv
 
-    >>>
+Will give us:
+::
+
     Original Square:
     3 * * * 7 * * * * 2
     8 9 6 5 2 * 3 4 1 7
