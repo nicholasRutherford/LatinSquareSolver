@@ -23,12 +23,12 @@ from collections import Counter
 
 
 class Hole:
-    """
-    Represent a square in a Latin square that needs to be filled in,
+    """Represent a square in a Latin square that needs to be filled in,
     aka a hole in the square.
 
-    Keeps track of the location of the hole, the possible
-    values that the hole can take, and whether the value has been set.
+    Notes:
+        Keeps track of the location of the hole, the possible
+        values that the hole can take, and whether the value has been set.
     """
 
     def __init__(self, n):
@@ -96,8 +96,7 @@ class LatinSquare:
         self.checkHoleOptions()
 
     def __init__(self):
-        """Initialize a latin square.
-        """
+        """Initialize a latin square."""
 
         self.n = 0
         self.k = 0
@@ -122,6 +121,7 @@ class LatinSquare:
             If randomize is not selected the square will remain in the basic
             state where each row is one offset from the previous.
             Ie for N = 5::
+
                 0 1 2 3 4
                 1 2 3 4 0
                 2 3 4 0 1
@@ -159,7 +159,7 @@ class LatinSquare:
         return output[:-1]  # Ignore last newline
 
     def strHoles(self):
-        """Pretty output. Holes are marked with an *.
+        """Pretty output. Holes are marked with an \*.
 
         Returns:
             str: The pretty output.
@@ -289,9 +289,10 @@ class LatinSquare:
                             where h has the smallest number of possible
                             values out of all the holes.
 
-        The list of squares is calculated lazily, where the value is not
-        calculated until it is actually used. This cuts down on the
-        number of expensive deepcopy calls needed.
+        Notes:
+            The list of squares is calculated lazily, where the value is not
+            calculated until it is actually used. This cuts down on the
+            number of expensive deepcopy calls needed.
         """
 
         # Sort holes so that the hole with the least number of
@@ -362,10 +363,11 @@ class LatinSquare:
             The elements must be intgers seperated by spaces. The holes
             are denoted as non-integer, non-space elements, such as '*', or
             '_'. For example::
+
                 0 1 2 3 4
                 1 2 3 4 _
                 2 3 4 0 1
-                3 4 0 1 2
+                3 * 0 1 2
                 4 0 1 2 3
         """
         rows = rawStr.split("\n")
